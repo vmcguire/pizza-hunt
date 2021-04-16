@@ -5,6 +5,16 @@ const pizzaController = {
   //We just created a method for finding all pizza data and another for finding a specific pizza by its _id value. The first method, getAllPizza(), will serve as the callback function for the GET /api/pizzas route. It uses the Mongoose .find() method, much like the Sequelize .findAll() method.
   getAllPizza(req, res) {
     Pizza.find({})
+      .populate({
+        path: "comments",
+        //Note that we also used the select option inside of populate(), so that we can tell Mongoose that we don't care about the __v field on comments either. The minus sign - in front of the field indicates that we don't want it to be returned. If we didn't have it, it would mean that it would return only the __v field.
+        select: "-__v",
+      })
+      //Since we're doing that for our populated comments, let's update the query to not include the pizza's __v field either, as it just adds more noise to our returning data.
+      .select("-__v")
+      //Lastly, we should set up the query so that the newest pizza returns first. Mongoose has a .sort() method to help with this. After the .select() method, use .sort({ _id: -1 }) to sort in DESC order by the _id value. This gets the newest pizza because a timestamp value is hidden somewhere inside the MongoDB ObjectId.
+      .sort({ _id: -1 })
+      //restructure the getPizzaById() method in the same manner so that getting a single pizza also populates comments.
       .then((dbPizzaData) => res.json(dbPizzaData))
       .catch((err) => {
         console.log(err);
@@ -15,6 +25,11 @@ const pizzaController = {
   // get one pizza by id
   getPizzaById({ params }, res) {
     Pizza.findOne({ _id: params.id })
+      .populate({
+        path: "comments",
+        select: "-__v",
+      })
+      .select("-__v")
       .then((dbPizzaData) => {
         // If no pizza is found, send 404
         if (!dbPizzaData) {
@@ -77,3 +92,6 @@ module.exports = pizzaController;
 //After adding the routes above this instruction follows:
 //Unlike other Express.js applications we've built, this one already has a lot of the routing structure in place. We just need to create the API-specific routes.
 //In the routes folder, create an api directory. After that, create a file called pizza-routes.js in the api directory.
+
+//Now, once again, the client’s front-end code is pretty much set up for us. We just need to tie in the necessary API calls.
+//Start by navigating to the front-end file, pizza-list.js, in the public/assets/js directory

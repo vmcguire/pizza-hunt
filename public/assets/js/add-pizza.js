@@ -48,6 +48,8 @@ const handlePizzaSubmit = (event) => {
 
   const formData = { pizzaName, createdBy, size, toppings };
 
+  //The one thing missing from the handlePizzaSubmit() function is the ability to actually POST that form data to the API—looks like we'll have to add it in.
+  //added below
   fetch("/api/pizzas", {
     method: "POST",
     headers: {
@@ -65,6 +67,10 @@ const handlePizzaSubmit = (event) => {
       console.log(err);
     });
 };
+//What we've done here is POST the formData object to the API. We've simply added an alert() if it's successfully created, as we don't know what Pizza Hunt has in store for this functionality yet.
+//Save this add-pizza.js file, refresh the browser at the localhost:3001/add-pizza page (ensure that your server is running), and fill out the form to add a new pizza. If you're adding a custom topping, make sure you click the "Add Topping" button and then select the checkbox for it from the list!
 
 $pizzaForm.addEventListener("submit", handlePizzaSubmit);
 $addToppingBtn.addEventListener("click", handleAddTopping);
+
+//create a Comment.js file in the models/ folder.
