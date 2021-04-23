@@ -8,9 +8,13 @@ const PizzaSchema = new Schema(
     //See how we don't have to use special imported data types for the type definitions? Using MongoDB and Mongoose, we simply instruct the schema that this data will adhere to the built-in JavaScript data types, including strings, Booleans, numbers, and so on.
     pizzaName: {
       type: String,
+      required: true,
+      trim: true,
     },
     createdBy: {
       type: String,
+      required: true,
+      trim: true,
     },
     createdAt: {
       type: Date,
@@ -23,6 +27,8 @@ const PizzaSchema = new Schema(
     },
     size: {
       type: String,
+      required: true,
+      enum: ["Personal", "Small", "Medium", "Large", "Extra Large"],
       default: "Large",
     },
     //Notice the empty brackets [] in the toppings field. This indicates an array as the data type. You could also specify Array in place of the brackets.
