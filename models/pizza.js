@@ -53,8 +53,10 @@ const PizzaSchema = new Schema(
 //Added after updating comments field above
 // get total count of comments and replies on retrieval
 PizzaSchema.virtual("commentCount").get(function () {
-  return this.comments.length;
-  //we need to tell the schema that it can use virtuals.
+  return this.comments.reduce(
+    (total, comment) => total + comment.replies.length + 1,
+    0
+  );
 });
 
 //Now we need to actually create the model to get the prebuilt methods that Mongoose provides. Let's add the following code to create the model and export it at the bottom of Pizza.js:
