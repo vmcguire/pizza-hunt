@@ -65,6 +65,7 @@ const handlePizzaSubmit = (event) => {
     })
     .catch((err) => {
       console.log(err);
+      saveRecord(formData);
     });
 };
 //What we've done here is POST the formData object to the API. We've simply added an alert() if it's successfully created, as we don't know what Pizza Hunt has in store for this functionality yet.
